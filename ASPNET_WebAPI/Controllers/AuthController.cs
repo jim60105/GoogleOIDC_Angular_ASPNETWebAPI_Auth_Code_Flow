@@ -9,11 +9,14 @@ namespace GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly OIDCService _oidcService;
+    private readonly IConfiguration _config;
 
     public AuthController(
-        OIDCService oidcService)
+        OIDCService oidcService,
+        IConfiguration config)
     {
         _oidcService = oidcService;
+        _config = config;
     }
 
     [HttpGet("oidc/signin", Name = nameof(SigninOIDCAsync))]
@@ -33,7 +36,7 @@ public class AuthController : ControllerBase
         _oidcService.SetupRedirectUri(Request, "api/Auth/oidc/signin");
         string idToken = await _oidcService.GetIdTokenAsync(code);
 
-        return Redirect("http://localhost:4200?idToken=" + idToken);
+        return Redirect($"{_config["FrontEndUri"]}?idToken={idToken}");
     }
 
 }
