@@ -3,18 +3,6 @@
 /*
  * Globals
  */
-
-
-/* Custom default button */
-.btn-secondary,
-.btn-secondary:hover,
-.btn-secondary:focus {
-  color: #333;
-  text-shadow: none;
-  /* Prevent inheritance from `body` */
-}
-
-
 /*
  * Base structure
  */
@@ -30,9 +18,34 @@ app-root {
 }
 
 .cover-container {
-  max-width: 42em;
+  max-width: 60vw;
 }
 
+main .btn-lg {
+  padding: .75rem 1.25rem;
+  font-weight: 700;
+  font-size: xx-large;
+  cursor: pointer;
+}
+
+/* Links */
+a,
+a:focus,
+a:hover {
+  color: #fff;
+  /* text-decoration: underline; */
+}
+
+/* Custom default button */
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+  color: #333;
+  text-shadow: none;
+  --bs-btn-hover-color: gray;
+  background-color: #fff;
+  border: .05rem solid #fff;
+}
 
 /*
  * Header
