@@ -1,0 +1,26 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow
+# Workaround: https://github.com/redhat-developer/vscode-yaml/issues/397
+
+name: Build and Deploy to Github Page
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo on master
+        uses: actions/checkout@v2
+        with:
+          ref: master
+
+      - name: Build angular project and publish to github page
+        uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.1
+        with:
+          github_access_token: ${{ secrets.ACCESS_TOKEN }} # see the Configuration section for how you can create secrets
+          angular_project_dir: Angular
+          build_configuration: production # The build environment for the app. please look configurations in your angular.json
+          deploy_branch: gh-pages # The branch the action should deploy to.
+          angular_dist_build_folder: Angular/dist/google-oidc-angular-aspnetweb-api-auth-code-flow # The folder where your project is supposed to be after running ng build by the action.
