@@ -16,6 +16,19 @@ jobs:
         with:
           ref: master
 
+      - name: Write environment.prod.ts file
+        env:
+          API_URL: ${{ secrets.API_URL }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        run: |
+          cat <<EOF > Angular/src/environments/environment.prod.ts
+          export const environment = {
+            production: true,
+            apiUrl: '$API_URL',
+            clientId: '$CLIENT_ID',
+          };
+          EOF
+
       - name: Build angular project and publish to github page
         uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.3.1
         with:
