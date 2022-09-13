@@ -33,7 +33,6 @@ public class AuthController : ControllerBase
             throw new Exception(error);
         }
 
-        _oidcService.SetupRedirectUri(Request, "api/Auth/oidc/signin");
         string idToken = await _oidcService.GetIdTokenAsync(code);
 
         return Redirect($"{_config["FrontEndUri"]}?idToken={idToken}");

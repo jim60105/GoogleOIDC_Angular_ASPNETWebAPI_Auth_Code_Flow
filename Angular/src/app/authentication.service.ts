@@ -16,7 +16,7 @@ export class AuthenticationService {
       client_id: environment.clientId,
       scope: 'openid profile email',
       ux_mode: 'redirect',
-      redirect_uri: environment.apiUrl + '/Auth/oidc/signin',
+      redirect_uri: environment.apiUrl + '/api/Auth/oidc/signin',
       state: '12345GG',
     });
     client.requestCode();
