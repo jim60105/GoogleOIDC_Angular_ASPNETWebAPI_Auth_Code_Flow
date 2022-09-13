@@ -23,7 +23,7 @@
   - OIDC僅使用 Google 官方的 `Google Sign-In` 客戶端套件
 
 > 本文重點主要是在於實作，而非OAuth 2.0的流程講解\
-> 如果想要深入學習，請參考保哥的課程 [《精通 OAuth 2.0 授權框架》](https://www.facebook.com/profile/100064322940906/search/?q=%E7%B2%BE%E9%80%9A%20OAuth%202.0%20%E6%8E%88%E6%AC%8A%E6%A1%86%E6%9E%B6)
+> 如果想要深入學習，請參考保哥的課程 [《精通 OAuth 2.0 授權框架》](https://www.accupass.com/event/2207070432471635037675)
 
 ## Try it out
 
@@ -77,7 +77,7 @@
 2. 以 gsi 客戶端套件啟動授權碼流程
    <https://github.com/jim60105/GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow/blob/559fdc47724bb6a3a9848c6639399e2572ae8f84/Angular/src/app/authentication.service.ts#L14-L23>
 3. 導向至 Google OAuth 授權頁面
-4. (使用者同意後)，導向至 `後端API/Auth/oidc/signin`，Model Binding 取得授權碼\
+4. (使用者同意後)，導向至 `後端/api/Auth/oidc/signin`，Model Binding 取得授權碼\
 若是使用者拒絕，或是發生了任何失敗，`error` 參數就會接到內容
    <https://github.com/jim60105/GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow/blob/559fdc47724bb6a3a9848c6639399e2572ae8f84/ASPNET_WebAPI/Controllers/AuthController.cs#L24-L40>
 5. 以授權碼去要回 idToken
@@ -88,6 +88,12 @@
    <https://github.com/jim60105/GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow/blob/559fdc47724bb6a3a9848c6639399e2572ae8f84/Angular/src/app/app.component.ts#L22-L29>
 8. 將 idToken 做 JWT decode，取得內容物
    <https://github.com/jim60105/GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow/blob/559fdc47724bb6a3a9848c6639399e2572ae8f84/Angular/src/app/authentication.service.ts#L32>
+
+> 如果需要在前/後端驗證 JWT Token 的有效性，可以叫這個 api\
+> 它會驗證簽章、簽發者、有效期\
+> `https://oauth2.googleapis.com/tokeninfo?id_token=XYZ123`\
+> 參考來源:\
+> <https://developers.google.com/identity/sign-in/web/backend-auth#calling-the-tokeninfo-endpoint>
 
 ## 參考資料
 
