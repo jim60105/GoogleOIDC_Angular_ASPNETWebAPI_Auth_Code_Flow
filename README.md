@@ -40,6 +40,7 @@
   - 修改 `ASPNET_WebAPI\appsettings.json` 檔案
     - 在 `YOUR CLIENT ID` 填入「用戶端編號」
     - 在 `YOUR CLIENT SECRET` 填入「用戶端密碼」
+    - `RedirectUri` 若留空字串則會彈性使用 runtime http request 進來時使用的 host；或者你也可以在這裡填入設定
   - 以 Debug 模式啟動但不偵錯 (Ctrl+F5)，Swagger 將啟動在 <https://localhost:7091>
 - Angular
   - Visual Studio Code 啟動 `Angular` 目錄
@@ -75,22 +76,23 @@
 
 1. 用戶在前端按下 Sign in with Google 按鈕
 2. 以 gsi 客戶端套件啟動授權碼流程
-   <https://github.com/jim60105/GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow/blob/559fdc47724bb6a3a9848c6639399e2572ae8f84/Angular/src/app/authentication.service.ts#L14-L23>
+   <https://github.com/jim60105/GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow/blob/292f0e393a593baeb5b57df35b28845db73fafdc/Angular/src/app/authentication.service.ts#L19-L28>
 3. 導向至 Google OAuth 授權頁面
 4. (使用者同意後)，導向至 `後端/api/Auth/oidc/signin`，Model Binding 取得授權碼\
-若是使用者拒絕，或是發生了任何失敗，`error` 參數就會接到內容
-   <https://github.com/jim60105/GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow/blob/559fdc47724bb6a3a9848c6639399e2572ae8f84/ASPNET_WebAPI/Controllers/AuthController.cs#L24-L40>
+   若是使用者拒絕，或是發生了任何失敗，`error` 參數就會接到內容
+   <https://github.com/jim60105/GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow/blob/292f0e393a593baeb5b57df35b28845db73fafdc/ASPNET_WebAPI/Controllers/AuthController.cs#L24-L39>
 5. 以授權碼去要回 idToken
-   <https://github.com/jim60105/GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow/blob/559fdc47724bb6a3a9848c6639399e2572ae8f84/ASPNET_WebAPI/Services/OIDCService.cs#L33-L51>
+   <https://github.com/jim60105/GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow/blob/292f0e393a593baeb5b57df35b28845db73fafdc/ASPNET_WebAPI/Services/OIDCService.cs#L39-L57>
 6. 導向回前端，將 idToken 以網址參數傳給 Angular
-   <https://github.com/jim60105/GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow/blob/559fdc47724bb6a3a9848c6639399e2572ae8f84/ASPNET_WebAPI/Controllers/AuthController.cs#L39>
+   <https://github.com/jim60105/GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow/blob/292f0e393a593baeb5b57df35b28845db73fafdc/ASPNET_WebAPI/Controllers/AuthController.cs#L38>
 7. Angular 前端應用程式接到 idToken
-   <https://github.com/jim60105/GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow/blob/559fdc47724bb6a3a9848c6639399e2572ae8f84/Angular/src/app/app.component.ts#L22-L29>
+   <https://github.com/jim60105/GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow/blob/292f0e393a593baeb5b57df35b28845db73fafdc/Angular/src/app/app.component.ts#L22-L42>
 8. 將 idToken 做 JWT decode，取得內容物
-   <https://github.com/jim60105/GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow/blob/559fdc47724bb6a3a9848c6639399e2572ae8f84/Angular/src/app/authentication.service.ts#L32>
+   <https://github.com/jim60105/GoogleOIDC_Angular_ASPNETWebAPI_Auth_Code_Flow/blob/292f0e393a593baeb5b57df35b28845db73fafdc/Angular/src/app/authentication.service.ts#L50>
 
 > 如果需要在前/後端驗證 JWT Token 的有效性，可以叫這個 api\
-> 它會驗證簽章、簽發者、有效期\
+> Google 會驗證簽章、簽發者、有效期，並在驗證通過時返回內容\
+> (直接 JWT decode 會比打這個 API 要來得快，建議只在需要由 Google 驗證時呼叫它)\
 > `https://oauth2.googleapis.com/tokeninfo?id_token=XYZ123`\
 > 參考來源:\
 > <https://developers.google.com/identity/sign-in/web/backend-auth#calling-the-tokeninfo-endpoint>
