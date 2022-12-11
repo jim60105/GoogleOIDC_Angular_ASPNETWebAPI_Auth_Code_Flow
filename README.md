@@ -5,6 +5,7 @@
 ## Demo site
 
 <https://googleoidcdemo.maki0419.com/>
+> 這台的後端放在 Azure App Service F1 free tier，cold start 時會有點慢，請耐心等待
 
 ## 介紹
 
